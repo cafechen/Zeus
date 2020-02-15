@@ -54,6 +54,16 @@ services:
       - ./data/nacos-server/logs/:/home/nacos/logs
     ports:
       - "8848:8848"
+  zeus-sentinel:
+    image: cike/sentinel-dashboard-docker:latest
+    container_name: zeus-sentinel
+    restart: always
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.50
+    ports:
+      - 8021:8021
+    env_file: .env
 
 networks:
   zeus-net:

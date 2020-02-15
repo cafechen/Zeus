@@ -13,7 +13,7 @@ services:
       ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181 server.2=zeus-zoo2:2888:3888;2181 server.3=zeus-zoo3:2888:3888;2181
     networks:
       zeus-net:
-        ipv4_address: 173.17.0.50
+        ipv4_address: 173.17.0.70
 
   zeus-zoo2:
     image: zookeeper
@@ -27,7 +27,7 @@ services:
       ZOO_SERVERS: server.1=zeus-zoo1:2888:3888;2181 server.2=0.0.0.0:2888:3888;2181 server.3=zeus-zoo3:2888:3888;2181
     networks:
       zeus-net:
-        ipv4_address: 173.17.0.51
+        ipv4_address: 173.17.0.71
 
   zeus-zoo3:
     image: zookeeper
@@ -41,4 +41,4 @@ services:
       ZOO_SERVERS: server.1=zeus-zoo1:2888:3888;2181 server.2=zeus-zoo2:2888:3888;2181 server.3=0.0.0.0:2888:3888;2181
     networks:
       zeus-net:
-        ipv4_address: 173.17.0.52
+        ipv4_address: 173.17.0.72
