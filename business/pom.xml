@@ -22,4 +22,12 @@
     <name>business</name>
     <description>Business Module</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.twelveolympians.zeus</groupId>
+            <artifactId>web</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 </project>

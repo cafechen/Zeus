@@ -38,6 +38,8 @@
 
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <lombok.version>1.18.12</lombok.version>
+
+        <flyway-core.version>6.2.2</flyway-core.version>
     </properties>
 
     <dependencies>
@@ -88,6 +90,15 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <scope>test</scope>
+            <version>${flyway-core.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>
