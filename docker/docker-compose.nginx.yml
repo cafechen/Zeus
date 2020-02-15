@@ -1,0 +1,15 @@
+version: '3.0'
+services:
+  zeus-nginx:
+    image: nginx:latest
+    container_name: zeus-nginx
+    restart: always
+    volumes:
+      - ./data/nginx/logs:/var/log/nginx
+      - ./nginx/conf:/etc/nginx/conf.d
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.60
+    ports:
+      - 9090:9090
+

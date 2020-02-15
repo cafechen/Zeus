@@ -1,0 +1,64 @@
+version: '3'
+services:
+  zeus-redis:
+    image: redis:alpine
+    container_name: zeus-redis
+    restart: always
+    volumes:
+      - ./data/redis:/data
+    environment:
+      - REDIS_PASSWORD=123456
+    networks:
+      - zeus-net
+    ports:
+      - 6379:6379
+    env_file: .env
+  zeus-rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: zeus-rabbitmq
+    restart: always
+    volumes:
+      - ./data/rabbitmq:/var/lib/rabbitmq/mnesia
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.20
+    ports:
+      - 5672:5672
+      - 15672:15672
+    env_file: .env
+  zeus-mysql:
+    image: mysql:5.7
+    container_name: zeus-mysql
+    restart: always
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.30
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: root123
+  zeus-nacos:
+    image: nacos/nacos-server:1.1.3
+    container_name: zeus-nacos
+    restart: always
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.40
+    environment:
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
+    volumes:
+      - ./data/nacos-server/logs/:/home/nacos/logs
+    ports:
+      - "8848:8848"
+
+networks:
+  zeus-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 173.17.0.0/16

@@ -1,0 +1,96 @@
+version: '3'
+services:
+  zeus-redis1:
+    image: redis:alpine
+    container_name: zeus-redis1
+    restart: always
+    ports:
+      - "7000:6379"
+    volumes:
+      - ./redis/redis-cluster.tmpl:/usr/local/etc/redis/redis.conf
+      - ./data/redis/redis1:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.11
+  zeus-redis2:
+    image: redis:alpine
+    container_name: zeus-redis2
+    restart: always
+    ports:
+      - "7001:6379"
+    volumes:
+      - ./redis/redis-cluster.tmpl:/usr/local/etc/redis/redis.conf
+      - ./data/redis/redis2:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.12
+  zeus-redis3:
+    image: redis:alpine
+    container_name: zeus-redis3
+    restart: always
+    ports:
+      - "7002:6379"
+    volumes:
+      - ./redis/redis-cluster.tmpl:/usr/local/etc/redis/redis.conf
+      - ./data/redis/redis3:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.13
+  zeus-redis4:
+    image: redis:alpine
+    container_name: zeus-redis4
+    restart: always
+    ports:
+      - "7003:6379"
+    volumes:
+      - ./redis/redis-cluster.tmpl:/usr/local/etc/redis/redis.conf
+      - ./data/redis/redis4:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.14
+  zeus-redis5:
+    image: redis:alpine
+    container_name: zeus-redis5
+    restart: always
+    ports:
+      - "7004:6379"
+    volumes:
+      - ./redis/redis-cluster.tmpl:/usr/local/etc/redis/redis.conf
+      - ./data/redis/redis5:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.15
+  zeus-redis6:
+    image: redis:alpine
+    container_name: zeus-redis6
+    restart: always
+    ports:
+      - "7005:6379"
+    volumes:
+      - ./redis/redis-cluster.tmpl:/usr/local/etc/redis/redis.conf
+      - ./data/redis/redis6:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.16
+  zeus-redis-cluster:
+    container_name: zeus-redis-cluster
+    tty: true
+    build:
+      context: redis/
+    hostname: zeus-redis-cluster
+    depends_on:
+      - zeus-redis1
+      - zeus-redis2
+      - zeus-redis3
+      - zeus-redis4
+      - zeus-redis5
+      - zeus-redis6
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.17
