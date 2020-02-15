@@ -13,7 +13,7 @@
     <artifactId>business</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>app</module>
+        <module>basic</module>
         <module>user</module>
         <module>account</module>
     </modules>
