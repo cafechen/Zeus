@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS zeus_demo;
-CREATE DATABASE zeus_demo DEFAULT CHARSET utf8mb4;
-USE zeus_demo;
+DROP DATABASE IF EXISTS zeus_basic;
+CREATE DATABASE zeus_basic DEFAULT CHARSET utf8mb4;
+USE zeus_basic;
 
 DROP TABLE IF EXISTS product;
 

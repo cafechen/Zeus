@@ -13,7 +13,7 @@ spring:
     #password: ${REDIS_PASSWORD:123456}
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:localhost}:${DATASOURCE_PORT:3306}/zeus_demo?characterEncoding=UTF-8&useUnicode=true&useSSL=false
+    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:localhost}:${DATASOURCE_PORT:3306}/zeus_account?characterEncoding=UTF-8&useUnicode=true&useSSL=false
     username: ${DATASOURCE_USERNAME:root}
     password: ${DATASOURCE_PASSWORD:root123}
   mvc:

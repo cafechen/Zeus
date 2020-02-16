@@ -1,8 +1,8 @@
 server:
-  port: 9004
+  port: 9003
 spring:
   application:
-    name: zeus-account
+    name: zeus-auth
   cloud:
     nacos:
       discovery:
