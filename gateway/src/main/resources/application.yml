@@ -25,7 +25,25 @@ spring:
           args:
             retries: 3
             statuses: BAD_GATEWAY
-
+      routes:
+        - id: zeus-basic
+          uri: lb://zeus-basic
+          predicates:
+            - Path=/zeus-basic/**
+          filters:
+            - StripPrefix= 1
+        - id: zeus-user
+          uri: lb://zeus-user
+          predicates:
+            - Path=/zeus-user/**
+          filters:
+            - StripPrefix= 1
+        - id: zeus-account
+          uri: lb://zeus-account
+          predicates:
+            - Path=/zeus-account/**
+          filters:
+            - StripPrefix= 1
 feign:
   sentinel:
     enabled: true
