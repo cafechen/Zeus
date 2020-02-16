@@ -17,7 +17,21 @@
     <name>auth-client</name>
     <description>Auth Client Module</description>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <commons-lang3.version>3.9</commons-lang3.version>
+        <jjwt.version>0.9.1</jjwt.version>
+    </properties>
+
     <dependencies>
+        <dependency>
+            <groupId>org.twelveolympians.zeus</groupId>
+            <artifactId>core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -25,6 +39,16 @@
         <dependency>
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-okhttp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
         </dependency>
     </dependencies>
 

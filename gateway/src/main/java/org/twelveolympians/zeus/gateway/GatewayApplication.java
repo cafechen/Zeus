@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-//@EnableFeignClients(basePackages = "com.springboot.cloud.auth.client")
+@EnableFeignClients(basePackages = "org.twelveolympians.zeus.auth.client")
 @EnableCircuitBreaker
 @EnableMethodCache(basePackages = "org.twelveolympians.zeus")
 @EnableCreateCacheAnnotation
