@@ -26,6 +26,11 @@ spring:
     time-zone: GMT+8
 #  resources:
 #    add-mappings: false
+    #jwt的密钥
+  security:
+    oauth2:
+      jwt:
+        signingKey: 123456
 
 jetcache:
   statIntervalMinutes: 15

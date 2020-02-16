@@ -55,14 +55,14 @@ public class AuthService implements IAuthService {
     @Override
     public boolean hasPermission(String authentication, String url, String method) {
         // 如果请求未携带token信息, 直接权限
-        if (StringUtils.isBlank(authentication) || !authentication.startsWith(BEARER)) {
+        /*if (StringUtils.isBlank(authentication) || !authentication.startsWith(BEARER)) {
             log.error("user token is null");
             return Boolean.FALSE;
         }
         //token是否有效，在网关进行校验，无效/过期等
         if (invalidJwtAccessToken(authentication)) {
             return Boolean.FALSE;
-        }
+        }*/
         //从认证服务获取是否有权限,远程调用
         return hasPermission(authenticate(authentication, url, method));
     }
