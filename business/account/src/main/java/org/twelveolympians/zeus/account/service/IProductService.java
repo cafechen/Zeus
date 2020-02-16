@@ -1,7 +1,7 @@
-package org.twelveolympians.zeus.user.service;
+package org.twelveolympians.zeus.account.service;
 
-import org.twelveolympians.zeus.user.entity.param.ProductQueryParam;
-import org.twelveolympians.zeus.user.entity.po.Product;
+import org.twelveolympians.zeus.account.entity.param.ProductQueryParam;
+import org.twelveolympians.zeus.account.entity.po.Product;
 
 import java.util.List;
 

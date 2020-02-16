@@ -1,9 +1,9 @@
-package org.twelveolympians.zeus.user.entity.form;
+package org.twelveolympians.zeus.account.entity.form;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.twelveolympians.zeus.user.entity.po.Product;
+import org.twelveolympians.zeus.account.entity.po.Product;
 import org.twelveolympians.zeus.common.web.entity.form.BaseForm;
 
 import javax.validation.constraints.NotBlank;

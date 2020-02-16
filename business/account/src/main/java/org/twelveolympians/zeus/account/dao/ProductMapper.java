@@ -1,9 +1,9 @@
-package org.twelveolympians.zeus.user.dao;
+package org.twelveolympians.zeus.account.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import org.twelveolympians.zeus.user.entity.po.Product;
+import org.twelveolympians.zeus.account.entity.po.Product;
 
 @Repository
 @Mapper

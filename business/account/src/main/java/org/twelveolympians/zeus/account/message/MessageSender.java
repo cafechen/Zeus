@@ -1,11 +1,11 @@
-package org.twelveolympians.zeus.user.message;
+package org.twelveolympians.zeus.account.message;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.twelveolympians.zeus.user.config.RabbitMQConfig;
+import org.twelveolympians.zeus.account.config.RabbitMQConfig;
 
 import javax.annotation.PostConstruct;
 

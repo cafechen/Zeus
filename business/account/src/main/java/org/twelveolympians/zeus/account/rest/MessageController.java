@@ -1,12 +1,12 @@
-package org.twelveolympians.zeus.user.rest;
+package org.twelveolympians.zeus.account.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.twelveolympians.zeus.user.config.RabbitMQConfig;
-import org.twelveolympians.zeus.user.message.MessageSender;
+import org.twelveolympians.zeus.account.config.RabbitMQConfig;
+import org.twelveolympians.zeus.account.message.MessageSender;
 import org.twelveolympians.zeus.common.core.entity.vo.Result;
 
 @RestController

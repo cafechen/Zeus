@@ -1,10 +1,10 @@
-package org.twelveolympians.zeus.user.entity.form;
+package org.twelveolympians.zeus.account.entity.form;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.twelveolympians.zeus.user.entity.param.ProductQueryParam;
+import org.twelveolympians.zeus.account.entity.param.ProductQueryParam;
 import org.twelveolympians.zeus.common.web.entity.form.BaseQueryForm;
 
 import javax.validation.constraints.NotBlank;

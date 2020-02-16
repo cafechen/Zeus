@@ -1,4 +1,4 @@
-package org.twelveolympians.zeus.user.service.impl;
+package org.twelveolympians.zeus.account.service.impl;
 
 import com.alicp.jetcache.anno.CacheInvalidate;
 import com.alicp.jetcache.anno.CacheType;
@@ -9,10 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
-import org.twelveolympians.zeus.user.dao.ProductMapper;
-import org.twelveolympians.zeus.user.entity.param.ProductQueryParam;
-import org.twelveolympians.zeus.user.entity.po.Product;
-import org.twelveolympians.zeus.user.service.IProductService;
+import org.twelveolympians.zeus.account.dao.ProductMapper;
+import org.twelveolympians.zeus.account.entity.param.ProductQueryParam;
+import org.twelveolympians.zeus.account.entity.po.Product;
+import org.twelveolympians.zeus.account.service.IProductService;
 
 import java.util.List;
 

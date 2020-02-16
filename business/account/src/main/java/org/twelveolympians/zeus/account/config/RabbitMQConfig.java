@@ -1,4 +1,4 @@
-package org.twelveolympians.zeus.user.config;
+package org.twelveolympians.zeus.account.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -16,7 +16,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.twelveolympians.zeus.user.message.MessageReceiver;
+import org.twelveolympians.zeus.account.message.MessageReceiver;
 
 @Configuration
 @Slf4j

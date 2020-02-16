@@ -1,14 +1,14 @@
-package org.twelveolympians.zeus.user.rest;
+package org.twelveolympians.zeus.account.rest;
 
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.twelveolympians.zeus.user.entity.form.ProductForm;
-import org.twelveolympians.zeus.user.entity.form.ProductQueryForm;
-import org.twelveolympians.zeus.user.entity.param.ProductQueryParam;
-import org.twelveolympians.zeus.user.entity.po.Product;
-import org.twelveolympians.zeus.user.service.IProductService;
+import org.twelveolympians.zeus.account.entity.form.ProductForm;
+import org.twelveolympians.zeus.account.entity.form.ProductQueryForm;
+import org.twelveolympians.zeus.account.entity.param.ProductQueryParam;
+import org.twelveolympians.zeus.account.entity.po.Product;
+import org.twelveolympians.zeus.account.service.IProductService;
 import org.twelveolympians.zeus.common.core.entity.vo.Result;
 
 import javax.validation.Valid;
