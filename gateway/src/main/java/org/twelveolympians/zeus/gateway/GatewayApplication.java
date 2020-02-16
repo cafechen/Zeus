@@ -1,7 +1,5 @@
 package org.twelveolympians.zeus.gateway;
 
-import com.alicp.jetcache.anno.config.EnableCreateCacheAnnotation;
-import com.alicp.jetcache.anno.config.EnableMethodCache;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
@@ -11,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableDiscoveryClient
 //@EnableFeignClients(basePackages = "com.springboot.cloud.auth.client")
-//@EnableCircuitBreaker
+@EnableCircuitBreaker
 //@EnableMethodCache(basePackages = "org.twelveolympians.zeus")
 //@EnableCreateCacheAnnotation
 public class GatewayApplication {
