@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service("userDetailsService")
+@Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
@@ -26,8 +26,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String uniqueId) {
-
-        log.info("load user by uniqueId :{}", uniqueId.toString());
         User user = userService.getByUniqueId(uniqueId);
         log.info("load user by username :{}", user.toString());
 
