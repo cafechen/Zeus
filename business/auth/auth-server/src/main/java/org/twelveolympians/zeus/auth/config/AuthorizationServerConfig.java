@@ -1,48 +1,37 @@
 package org.twelveolympians.zeus.auth.config;
 
 import com.google.common.collect.Lists;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
-import org.twelveolympians.zeus.auth.oauth2.enhancer.CustomTokenEnhancer;
-import org.twelveolympians.zeus.auth.exception.CustomWebResponseExceptionTranslator;
-import org.twelveolympians.zeus.auth.oauth2.granter.MobileTokenGranter;
-import org.springframework.beans.factory.annotation.Autowired;
+`import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
-import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
-import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
-    @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
-    @Qualifier("dataSource")
+    //@Qualifier("dataSource")
     @Autowired
     DataSource dataSource;
 
@@ -57,14 +46,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private String signingKey;
 
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-        // 支持将client参数放在header或body中
-        oauthServer.allowFormAuthenticationForClients();
-        oauthServer.tokenKeyAccess("isAuthenticated()")
-                .checkTokenAccess("permitAll()");
-    }
-
-    @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // 配置客户端信息，从数据库中读取，对应oauth_client_details表
         clients.jdbc(dataSource);
@@ -76,33 +57,42 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints.tokenStore(tokenStore())
                 .authorizationCodeServices(authorizationCodeServices())
                 .approvalStore(approvalStore())
-                .exceptionTranslator(customExceptionTranslator())
+                //.exceptionTranslator(customExceptionTranslator())
                 //.tokenEnhancer(tokenEnhancerChain())
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService);
+                .userDetailsService(userDetailsService) ;
                 //update by joe_chen add  granter
                 //.tokenGranter(tokenGranter(endpoints));
 
     }
 
-    /**
-     * 自定义OAuth2异常处理
-     *
-     * @return CustomWebResponseExceptionTranslator
-     */
-    @Bean
-    public WebResponseExceptionTranslator<OAuth2Exception> customExceptionTranslator() {
-        return new CustomWebResponseExceptionTranslator();
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer oauthServer)
+            throws Exception {
+        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess(
+                "isAuthenticated()");
     }
 
     /**
-     * 授权信息持久化实现
+     * token的持久化
      *
-     * @return JdbcApprovalStore
+     * @return JwtTokenStore
      */
     @Bean
-    public ApprovalStore approvalStore() {
-        return new JdbcApprovalStore(dataSource);
+    public TokenStore tokenStore() {
+        return new JwtTokenStore(accessTokenConverter());
+    }
+
+    /**
+     * jwt token的生成配置
+     *
+     * @return
+     */
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey(signingKey);
+        return converter;
     }
 
     /**
@@ -117,37 +107,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     /**
-     * token的持久化
+     * 授权信息持久化实现
      *
-     * @return JwtTokenStore
+     * @return JdbcApprovalStore
      */
     @Bean
-    public TokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
-    }
-
-    /**
-     * 自定义token
-     *
-     * @return tokenEnhancerChain
-     */
-    /*@Bean
-    public TokenEnhancerChain tokenEnhancerChain() {
-        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(new CustomTokenEnhancer(), accessTokenConverter()));
-        return tokenEnhancerChain;
-    }
-*/
-    /**
-     * jwt token的生成配置
-     *
-     * @return
-     */
-    @Bean
-    public JwtAccessTokenConverter accessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(signingKey);
-        return converter;
+    public ApprovalStore approvalStore() {
+        return new JdbcApprovalStore(dataSource);
     }
 
     /**
