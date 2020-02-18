@@ -17,11 +17,14 @@ import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.twelveolympians.zeus.auth.enhancer.CustomTokenEnhancer;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 @Slf4j
 @Configuration
@@ -49,11 +52,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // 配置两个客户端,一个用于password认证 一个用于client认证
-        /*clients.inMemory().withClient("zeus_client")
-                .authorizedGrantTypes("client_credentials", "password", "refresh_token")
-                .scopes("read")
-                .secret("$2a$10$2szDKjvKHJCWE6YQNznogOeQF3USZHmCYj1fG7YbfK.vnTgNKLzri")
-                .accessTokenValiditySeconds(3600);*/
         clients.jdbc(dataSource);
     }
 
@@ -61,9 +59,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         // 配置token的数据源、自定义的tokenServices等信息,配置身份认证器，配置认证方式，TokenStore，TokenGranter，OAuth2RequestFactory
         endpoints.tokenStore(tokenStore())
+                .tokenEnhancer(tokenEnhancerChain())
                 .authenticationManager(authenticationManager)
-                .reuseRefreshTokens(false)
-                .userDetailsService(userDetailsService) ;
+                .userDetailsService(userDetailsService)
+                .reuseRefreshTokens(false) ;
     }
 
     @Override
@@ -116,6 +115,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setSigningKey(signingKey);
         return converter;
+    }
+
+    /**
+     * 自定义token
+     *
+     * @return tokenEnhancerChain
+     */
+    @Bean
+    public TokenEnhancerChain tokenEnhancerChain() {
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(new CustomTokenEnhancer(), accessTokenConverter()));
+        return tokenEnhancerChain;
     }
 
 }
