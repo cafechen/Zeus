@@ -1,15 +1,14 @@
-package org.twelveolympians.zeus.auth.service.impl;
+package org.twelveolympians.zeus.auth.provider.impl;
 
 import org.twelveolympians.zeus.auth.entity.po.Role;
-import org.twelveolympians.zeus.auth.service.IRoleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.twelveolympians.zeus.auth.provider.IRoleProvider;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class RoleService implements IRoleService {
+public class RoleProvider implements IRoleProvider {
 
     @Override
     public Set<Role> queryUserRolesByUserId(String userId) {

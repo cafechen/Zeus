@@ -104,11 +104,9 @@ feign:
 
 logging:
   level:
-    java:
-      sql:
-        PreparedStatement: debug
-    com:
-      springboot: debug
+    java.sql.PreparedStatement: DEBUG
+    com.springboot: DEBUG
+    org.springframework: DEBUG
   path: logs/
   file:
     max-size: 1GB

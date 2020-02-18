@@ -1,10 +1,6 @@
 package org.twelveolympians.zeus.auth.config;
 
-import com.google.common.collect.Lists;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
-import org.twelveolympians.zeus.auth.oauth2.enhancer.CustomTokenEnhancer;
-import org.twelveolympians.zeus.auth.exception.CustomWebResponseExceptionTranslator;
-import org.twelveolympians.zeus.auth.oauth2.granter.MobileTokenGranter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,8 +14,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.CompositeTokenGranter;
-import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
@@ -29,11 +23,13 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.twelveolympians.zeus.auth.enhancer.CustomTokenEnhancer;
+import org.twelveolympians.zeus.auth.exception.CustomWebResponseExceptionTranslator;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
-import java.util.List;
 
+@Slf4j
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -42,13 +38,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    @Qualifier("customUserDetailsService")
+    UserDetailsService userDetailsService;
+
     @Qualifier("dataSource")
     @Autowired
     DataSource dataSource;
-
-    @Autowired
-    @Qualifier("userDetailsService")
-    UserDetailsService userDetailsService;
 
     /**
      * jwt 对称加密密钥
@@ -57,16 +53,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private String signingKey;
 
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-        // 支持将client参数放在header或body中
-        oauthServer.allowFormAuthenticationForClients();
-        oauthServer.tokenKeyAccess("isAuthenticated()")
-                .checkTokenAccess("permitAll()");
-    }
-
-    @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        // 配置客户端信息，从数据库中读取，对应oauth_client_details表
+        // 配置两个客户端,一个用于password认证 一个用于client认证
         clients.jdbc(dataSource);
     }
 
@@ -77,12 +65,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authorizationCodeServices(authorizationCodeServices())
                 .approvalStore(approvalStore())
                 .exceptionTranslator(customExceptionTranslator())
-                //.tokenEnhancer(tokenEnhancerChain())
+                .tokenEnhancer(tokenEnhancerChain())
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService);
-                //update by joe_chen add  granter
-                //.tokenGranter(tokenGranter(endpoints));
+                .userDetailsService(userDetailsService)
+                .reuseRefreshTokens(false) ;
+    }
 
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer oauthServer)
+            throws Exception {
+        // 支持将client参数放在header或body中
+        oauthServer.allowFormAuthenticationForClients();
+        oauthServer.tokenKeyAccess("isAuthenticated()")
+                .checkTokenAccess("permitAll()");
     }
 
     /**
@@ -127,18 +122,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     /**
-     * 自定义token
-     *
-     * @return tokenEnhancerChain
-     */
-    /*@Bean
-    public TokenEnhancerChain tokenEnhancerChain() {
-        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(new CustomTokenEnhancer(), accessTokenConverter()));
-        return tokenEnhancerChain;
-    }
-*/
-    /**
      * jwt token的生成配置
      *
      * @return
@@ -151,20 +134,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     /**
-     * 配置自定义的granter,手机号验证码登陆
+     * 自定义token
      *
-     * @param endpoints
-     * @return
-     * @auth joe_chen
+     * @return tokenEnhancerChain
      */
-    /*public TokenGranter tokenGranter(final AuthorizationServerEndpointsConfigurer endpoints) {
-        List<TokenGranter> granters = Lists.newArrayList(endpoints.getTokenGranter());
-        granters.add(new MobileTokenGranter(
-                authenticationManager,
-                endpoints.getTokenServices(),
-                endpoints.getClientDetailsService(),
-                endpoints.getOAuth2RequestFactory()));
-        return new CompositeTokenGranter(granters);
-    }*/
+    @Bean
+    public TokenEnhancerChain tokenEnhancerChain() {
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(new CustomTokenEnhancer(), accessTokenConverter()));
+        return tokenEnhancerChain;
+    }
 
 }

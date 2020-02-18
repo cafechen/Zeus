@@ -1,6 +1,7 @@
-package org.twelveolympians.zeus.auth.oauth2.enhancer;
+package org.twelveolympians.zeus.auth.enhancer;
 
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -11,6 +12,7 @@ import java.util.Map;
 /**
  * 自定义token携带内容
  */
+@Slf4j
 public class CustomTokenEnhancer implements TokenEnhancer {
 
     @Override

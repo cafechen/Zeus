@@ -1,9 +1,9 @@
-package org.twelveolympians.zeus.auth.oauth2;
+package org.twelveolympians.zeus.auth.service;
 
 import org.twelveolympians.zeus.auth.entity.po.Role;
 import org.twelveolympians.zeus.auth.entity.po.User;
-import org.twelveolympians.zeus.auth.service.IRoleService;
-import org.twelveolympians.zeus.auth.service.IUserService;
+import org.twelveolympians.zeus.auth.provider.IRoleProvider;
+import org.twelveolympians.zeus.auth.provider.IUserProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,19 +16,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service("userDetailsService")
+@Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private IUserService userService;
+    private IUserProvider userProvider;
     @Autowired
-    private IRoleService roleService;
+    private IRoleProvider roleProvider;
 
     @Override
     public UserDetails loadUserByUsername(String uniqueId) {
-
-        log.info("load user by uniqueId :{}", uniqueId.toString());
-        User user = userService.getByUniqueId(uniqueId);
+        User user = userProvider.getByUniqueId(uniqueId);
         log.info("load user by username :{}", user.toString());
 
         return new org.springframework.security.core.userdetails.User(
@@ -48,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @return
      */
     protected Set<GrantedAuthority> obtainGrantedAuthorities(User user) {
-        Set<Role> roles = roleService.queryUserRolesByUserId(user.getId());
+        Set<Role> roles = roleProvider.queryUserRolesByUserId(user.getId());
         log.info("user:{},roles:{}", user.getUsername(), roles);
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getCode())).collect(Collectors.toSet());
     }
