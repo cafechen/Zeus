@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -17,11 +18,13 @@ import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.twelveolympians.zeus.auth.enhancer.CustomTokenEnhancer;
+import org.twelveolympians.zeus.auth.exception.CustomWebResponseExceptionTranslator;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
@@ -59,6 +62,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         // 配置token的数据源、自定义的tokenServices等信息,配置身份认证器，配置认证方式，TokenStore，TokenGranter，OAuth2RequestFactory
         endpoints.tokenStore(tokenStore())
+                .authorizationCodeServices(authorizationCodeServices())
+                .approvalStore(approvalStore())
+                .exceptionTranslator(customExceptionTranslator())
                 .tokenEnhancer(tokenEnhancerChain())
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
@@ -72,6 +78,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         oauthServer.allowFormAuthenticationForClients();
         oauthServer.tokenKeyAccess("isAuthenticated()")
                 .checkTokenAccess("permitAll()");
+    }
+
+    /**
+     * 自定义OAuth2异常处理
+     *
+     * @return CustomWebResponseExceptionTranslator
+     */
+    @Bean
+    public WebResponseExceptionTranslator<OAuth2Exception> customExceptionTranslator() {
+        return new CustomWebResponseExceptionTranslator();
     }
 
     /**
