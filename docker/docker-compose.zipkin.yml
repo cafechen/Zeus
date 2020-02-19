@@ -1,0 +1,50 @@
+version: '3.0'
+services:
+  zeus-zipkin:
+    image: openzipkin/zipkin
+    container_name: zeus-zipkin
+    hostname: zeus-zipkin
+    restart: always
+    volumes:
+      - ./data/zipkin/logs:/var/logs
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.80
+    ports:
+      - 9411:9411
+    environment:
+      - RABBIT_ADDRESSES=zeus-rabbitmq:5672
+      - RABBIT_MQ_PORT=5672
+      - RABBIT_PASSWORD=guest
+      - RABBIT_USER=guest
+      - STORAGE_TYPE=elasticsearch
+      - ES_HOSTS=http://zeus-elasticsearch:9200
+    depends_on:
+      - zeus-rabbitmq
+
+  zeus-elasticsearch:
+    image: elasticsearch:7.3.0
+    container_name: zeus-elasticsearch
+    hostname: zeus-elasticsearch
+    restart: always
+    environment:
+      - cluster.name=zeus-elasticsearch
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - node.name=zeus-elasticsearch_node_1
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/elasticsearch/data:/usr/share/elasticsearch/data
+      - ./data/elasticsearch/logs:/usr/share/elasticsearch/logs
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    networks:
+      zeus-net:
+        ipv4_address: 173.17.0.81
+    ports:
+      - 9200:9200
+      - 9300:9300
+
