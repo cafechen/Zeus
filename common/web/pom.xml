@@ -27,7 +27,7 @@
         <mybatis.version>3.5.4</mybatis.version>
         <mybatis-spring.version>2.0.3</mybatis-spring.version>
         <druid-spring-boot-starter.version>1.1.21</druid-spring-boot-starter.version>
-        <mysql-connector-java.version>5.1.48</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 
         <jetcache-starter-redis.version>2.5.12</jetcache-starter-redis.version>
         <jackson-core.version>2.10.2</jackson-core.version>
