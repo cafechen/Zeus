@@ -31,7 +31,7 @@
 
         <jetcache-starter-redis.version>2.5.12</jetcache-starter-redis.version>
         <jackson-core.version>2.10.2</jackson-core.version>
-        <jackson-databind.version>2.10.2</jackson-databind.version>
+        <jackson-databind.version>2.12.6.1</jackson-databind.version>
 
         <jjwt.version>0.9.1</jjwt.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
